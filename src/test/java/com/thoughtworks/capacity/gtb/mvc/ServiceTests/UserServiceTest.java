@@ -24,19 +24,21 @@ class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
+    private User user;
+
     @BeforeEach
     void setUp() {
         initMocks(this);
         userService = new UserService(userRepository);
-    }
-
-    @Test
-    void should_return_none_body_when_register_user_success() {
-        User user = User.builder()
+        user = User.builder()
                 .username("yangqian")
                 .password("123")
                 .email("743295483@qq.com")
                 .build();
+    }
+
+    @Test
+    void should_return_none_body_when_register_user_success() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
         userService.register(user);
         verify(userRepository).save(user);
@@ -44,11 +46,6 @@ class UserServiceTest {
 
     @Test
     void should_throw_exception_when_register_user_is_existed() {
-        User user = User.builder()
-                .username("yangqian")
-                .password("123")
-                .email("743295483@qq.com")
-                .build();
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
         RequestNotValidException exception = assertThrows(RequestNotValidException.class, () -> userService.register(user));
         assertEquals("username is existed!", exception.getMessage());
