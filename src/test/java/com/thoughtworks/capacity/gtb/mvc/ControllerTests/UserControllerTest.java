@@ -48,4 +48,13 @@ public class UserControllerTest {
         Optional<User> userOptional = userRepository.findByUsername("yangqian");
         assertTrue(userOptional.isPresent());
     }
+
+    @Test
+    void should_throw_bad_request_when_register_username_is_existed() throws Exception {
+        userRepository.save(user);
+        String jsonValue =  "{\"username\":\"yangqian\", \"password\":\"12345\", \"email\":\"74@tw.com\"}";
+        mockMvc.perform(post("/register")
+                .content(jsonValue).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
