@@ -24,4 +24,11 @@ public class UserService {
         userRepository.save(user);
         userRepository.setMaxUserId();
     }
+
+    public User login(String username, String password) {
+        Optional<User> userOptional = userRepository.findByUsernameAndPassword(username, password);
+        if (!userOptional.isPresent())
+            throw new RequestNotValidException("username or password is not correct!");
+        return userOptional.get();
+    }
 }

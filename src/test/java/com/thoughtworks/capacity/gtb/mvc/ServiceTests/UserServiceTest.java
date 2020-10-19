@@ -50,4 +50,18 @@ class UserServiceTest {
         RequestNotValidException exception = assertThrows(RequestNotValidException.class, () -> userService.register(user));
         assertEquals("username is existed!", exception.getMessage());
     }
+
+    @Test
+    void should_return_user_info_when_login_success() {
+        when(userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(Optional.of(user));
+        User userResponse = userService.login(user.getUsername(), user.getPassword());
+        assertEquals(user.getUsername(), userResponse.getUsername());
+    }
+
+    @Test
+    void should_throw_exception_when_login_failed() {
+        when(userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(Optional.empty());
+        RequestNotValidException exception = assertThrows(RequestNotValidException.class, () -> userService.login(user.getUsername(), user.getPassword()));
+        assertEquals("username or password is not correct!", exception.getMessage());
+    }
 }
