@@ -3,10 +3,7 @@ package com.thoughtworks.capacity.gtb.mvc.controller;
 import com.thoughtworks.capacity.gtb.mvc.dto.User;
 import com.thoughtworks.capacity.gtb.mvc.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -17,9 +14,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "register")
+    @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody User user) {
         userService.register(user);
+    }
+
+    @GetMapping(value = "/login")
+    public User login(@RequestParam(name = "username") String username,
+                      @RequestParam(name = "password") String password) {
+        return userService.login(username, password);
     }
 }
