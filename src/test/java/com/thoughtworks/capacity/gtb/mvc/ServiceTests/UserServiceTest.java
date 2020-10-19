@@ -18,9 +18,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @SpringBootTest
-public class UserServiceTest {
+class UserServiceTest {
 
-    UserService userService;
+    private UserService userService;
     @Mock
     UserRepository userRepository;
 
